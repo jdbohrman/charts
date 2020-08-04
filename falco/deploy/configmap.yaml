@@ -35,7 +35,7 @@ data:
     time_format_iso_8601: false
 
     # Whether to output events in json or text
-    json_output: false
+    json_output: true
 
     # When using json output, whether or not to include the "output" property
     # itself (e.g. "File below a known binary directory opened for writing
@@ -152,7 +152,7 @@ data:
     # Also, the program will be closed and reopened if falco is signaled with
     # SIGUSR1.
     program_output:
-      enabled: false
+      enabled: true
       keep_alive: false
       program: |
         mail -s "Falco Notification" someone@example.com
@@ -1259,15 +1259,15 @@ data:
     [\n    docker.io/sysdig/agent, docker.io/sysdig/falco, docker.io/sysdig/sysdig,\n
     \   gcr.io/google_containers/kube-proxy, docker.io/calico/node, quay.io/calico/node,\n
     \   docker.io/rook/toolbox, docker.io/cloudnativelabs/kube-router, docker.io/mesosphere/mesos-slave,\n
-    \   docker.io/docker/ucp-agent, sematext_images, k8s.gcr.io/kube-proxy,\n    docker.io/falcosecurity/falco\n
-    \   ]\n\n- macro: falco_privileged_containers\n  condition: (openshift_image or\n
-    \             user_trusted_containers or\n              container.image.repository
-    in (trusted_images) or\n              container.image.repository in (falco_privileged_images)
-    or\n              container.image.repository startswith istio/proxy_ or\n              container.image.repository
-    startswith quay.io/sysdig)\n\n# Add conditions to this macro (probably in a separate
-    file,\n# overwriting this macro) to specify additional containers that are\n# allowed
-    to run privileged\n#\n# In this file, it just takes one of the images in falco_privileged_images\n#
-    and repeats it.\n- macro: user_privileged_containers\n  condition: (container.image.repository
+    \   docker.io/docker/ucp-agent, sematext_images, k8s.gcr.io/kube-proxy\n    ]\n\n-
+    macro: falco_privileged_containers\n  condition: (openshift_image or\n              user_trusted_containers
+    or\n              container.image.repository in (trusted_images) or\n              container.image.repository
+    in (falco_privileged_images) or\n              container.image.repository startswith
+    istio/proxy_ or\n              container.image.repository startswith quay.io/sysdig)\n\n#
+    Add conditions to this macro (probably in a separate file,\n# overwriting this macro)
+    to specify additional containers that are\n# allowed to run privileged\n#\n# In
+    this file, it just takes one of the images in falco_privileged_images\n# and repeats
+    it.\n- macro: user_privileged_containers\n  condition: (container.image.repository
     endswith sysdig/agent)\n\n- list: rancher_images\n  items: [\n    rancher/network-manager,
     rancher/dns, rancher/agent,\n    rancher/lb-service-haproxy, rancher/metadata, rancher/healthcheck\n
     \ ]\n\n# These container images are allowed to mount sensitive paths from the\n#

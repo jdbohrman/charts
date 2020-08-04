@@ -21,10 +21,12 @@ spec:
         app: RELEASE-NAME-falco
         role: security
       annotations:
-        checksum/config: 3f71ed8d43c8aeb4f967d9e154cabfd75c35a93eb1ad8cfada81d6340f7ccb11
+        checksum/config: 24be0a2b46a1e183c12cd245a400d65f1f8aa90befaac6c6ba7aaec1a99895b5
         checksum/rules: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
       serviceAccountName: RELEASE-NAME-falco
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
@@ -51,6 +53,8 @@ spec:
             - "https://$(KUBERNETES_SERVICE_HOST)"
             - -pk
           env:
+            - name: FALCO_BPF_PROBE
+              value:
           volumeMounts:
             - mountPath: /host/var/run/docker.sock
               name: docker-socket
